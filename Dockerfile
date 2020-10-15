@@ -8,7 +8,8 @@ RUN apk add --no-cache --virtual build-dependencies \
     flex \
     cmake \
     pkgconfig \
-    zlib-dev
+    zlib-dev \
+    linux-headers
 
 ENV CFLAGGS "$CFLAGS -U_FORTIFY_SOURCE"
 ENV CXXFLAGS "$CXXFLAGS -U_FORTIFY_SOURCE"
