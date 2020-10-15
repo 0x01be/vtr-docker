@@ -11,8 +11,8 @@ RUN apk add --no-cache --virtual build-dependencies \
     zlib-dev \
     linux-headers
 
-#ENV CFLAGGS "$CFLAGS -U_FORTIFY_SOURCE"
-#ENV CXXFLAGS "$CXXFLAGS -U_FORTIFY_SOURCE"
+ENV CFLAGGS "$CFLAGS -U_FORTIFY_SOURCE"
+ENV CXXFLAGS "$CXXFLAGS -U_FORTIFY_SOURCE"
 ENV VTR_REVISION master
 RUN git clone --depth 1 --branch ${VTR_REVISION} https://github.com/SymbiFlow/vtr-verilog-to-routing.git /vtr
 
