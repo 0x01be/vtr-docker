@@ -1,20 +1,21 @@
-FROM alpine:3.12.0 as builder
+FROM alpine as build
 
 RUN apk add --no-cache --virtual build-dependencies \
-    --repository http://dl-cdn.alpinelinux.org/alpine/edge/main \
-    --repository http://dl-cdn.alpinelinux.org/alpine/edge/community \
-    --repository http://dl-cdn.alpinelinux.org/alpine/edge/testing \
     git \
     build-base \
     cmake \
     bison \
     flex \
     cmake \
-    pkgconfig
+    pkgconfig \
+    zlib-dev
 
-RUN git clone --depth 1 https://github.com/verilog-to-routing/vtr-verilog-to-routing.git /vtr
+ENV CFLAGGS "$CFLAGS -U_FORTIFY_SOURCE"
+ENV CXXFLAGS "$CXXFLAGS -U_FORTIFY_SOURCE"
+ENV VTR_REVISION master
+RUN git clone --depth 1 --branch ${VTR_REVISION} https://github.com/SymbiFlow/vtr-verilog-to-routing.git /vtr
 
-WORKDIR /vtr/
+WORKDIR /vtr
 
 RUN make
 RUN PREFIX=/opt/vtr/ make install
