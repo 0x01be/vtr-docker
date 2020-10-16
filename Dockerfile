@@ -19,7 +19,8 @@ RUN apk add --no-cache --virtual build-dependencies \
     libxft-dev \
     libx11-dev \
     fontconfig-dev \
-    gtk+3.0-dev
+    gtk+3.0-dev \
+    libtbb-dev
 
 RUN ln -s /usr/bin/python3 /usr/bin/python
 RUN pip install \
