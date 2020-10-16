@@ -1,23 +1,20 @@
-FROM alpine as build
+FROM 0x01be/vtr:build as build
 
-RUN apk add --no-cache --virtual build-dependencies \
-    git \
-    build-base \
-    cmake \
-    bison \
-    flex \
-    cmake \
-    pkgconfig \
-    zlib-dev \
-    linux-headers
+FROM alpine
 
-ENV CFLAGGS "$CFLAGS -U_FORTIFY_SOURCE"
-ENV CXXFLAGS "$CXXFLAGS -U_FORTIFY_SOURCE"
-ENV VTR_REVISION master
-RUN git clone --depth 1 --branch ${VTR_REVISION} https://github.com/SymbiFlow/vtr-verilog-to-routing.git /vtr
+COPY --from=build /opt/vtr/ /opt/vtr/
+
+RUN apk add --no-cache --virtual vtr-runtime-dependencies \
+    libstdc++ \
+    zlib-dev
+
+RUN adduser -D -u 1000 vtr
 
 WORKDIR /vtr
 
-RUN make
-RUN PREFIX=/opt/vtr/ make install
+RUN chown vtr:vtr /workspace
+
+USER vtr
+
+ENV PATH ${PATH}:/opt/vtr/bin/
 
