@@ -1,6 +1,6 @@
 FROM alpine as build
 
-RUN apk add --no-cache --virtual build-dependencies \
+RUN apk add --no-cache --virtual vtr-build-dependencies \
     git \
     build-base \
     cmake \
@@ -19,7 +19,12 @@ RUN apk add --no-cache --virtual build-dependencies \
     libxft-dev \
     libx11-dev \
     fontconfig-dev \
-    gtk+3.0-dev \
+    gtk+3.0-dev
+
+RUN apk add --no-cache --virtual vtr-edge-build-dependencies \
+    --repository http://dl-cdn.alpinelinux.org/alpine/edge/testing \
+    --repository http://dl-cdn.alpinelinux.org/alpine/edge/community \
+    --repository http://dl-cdn.alpinelinux.org/alpine/edge/main \
     libtbb-dev
 
 RUN ln -s /usr/bin/python3 /usr/bin/python
