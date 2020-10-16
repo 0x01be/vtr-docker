@@ -7,17 +7,38 @@ RUN apk add --no-cache --virtual build-dependencies \
     bison \
     flex \
     cmake \
+    python3-dev \
+    py3-pip \
+    perl \
+    perl-list-moreutils \
     pkgconfig \
     zlib-dev \
-    linux-headers
+    linux-headers \
+    cairo-dev \
+    freetype-dev \
+    libxft-dev \
+    libx11-dev \
+    fontconfig-dev \
+    gtk+3.0-dev
 
-ENV CFLAGGS "$CFLAGS -U_FORTIFY_SOURCE"
-ENV CXXFLAGS "$CXXFLAGS -U_FORTIFY_SOURCE"
+RUN ln -s /usr/bin/python3 /usr/bin/python
+RUN pip install \
+    black \
+    prettytable \
+    pylint \
+    lxml
+
 ENV VTR_REVISION master
 RUN git clone --depth 1 --branch ${VTR_REVISION} https://github.com/SymbiFlow/vtr-verilog-to-routing.git /vtr
 
-WORKDIR /vtr
+WORKDIR /vtr/build
 
+ENV CFLAGGS "$CFLAGS -U_FORTIFY_SOURCE"
+ENV CXXFLAGS "$CXXFLAGS -U_FORTIFY_SOURCE"
+
+RUN cmake \
+    -DCMAKE_INSTALL_PREFIX=/opt/vtr \
+    ..
 RUN make
-RUN PREFIX=/opt/vtr/ make install
+RUN make install
 
