@@ -9,6 +9,7 @@ RUN apk add --no-cache --virtual vtr-build-dependencies \
     cmake \
     python3-dev \
     py3-pip \
+    cython \
     perl \
     perl-list-moreutils \
     pkgconfig \
@@ -19,7 +20,9 @@ RUN apk add --no-cache --virtual vtr-build-dependencies \
     libxft-dev \
     libx11-dev \
     fontconfig-dev \
-    gtk+3.0-dev
+    gtk+3.0-dev \
+    libxml2-dev \
+    libxslt-dev
 
 RUN apk add --no-cache --virtual vtr-edge-build-dependencies \
     --repository http://dl-cdn.alpinelinux.org/alpine/edge/testing \
@@ -43,7 +46,7 @@ WORKDIR /vtr/build
 
 ENV CFLAGGS "$CFLAGS -U_FORTIFY_SOURCE"
 ENV CXXFLAGS "$CXXFLAGS -U_FORTIFY_SOURCE"
-ENV C_INCLUDE_PATH /usr/include/::/opt/eigen/include/
+ENV C_INCLUDE_PATH /usr/include/:/opt/eigen/include/
 ENV CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH}:/opt/eigen
 
 RUN cmake \
