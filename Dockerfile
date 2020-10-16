@@ -6,7 +6,7 @@ COPY --from=build /opt/vtr/ /opt/vtr/
 
 RUN apk add --no-cache --virtual vtr-runtime-dependencies \
     libstdc++ \
-    zlib-dev
+    zlib
 
 RUN adduser -D -u 1000 vtr
 
