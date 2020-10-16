@@ -1,6 +1,6 @@
 FROM 0x01be/vtr:build as build
 
-FROM 0x01/xpra
+FROM 0x01be/xpra
 
 COPY --from=build /opt/vtr/ /opt/vtr/
 
