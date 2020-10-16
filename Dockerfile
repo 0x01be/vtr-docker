@@ -28,6 +28,8 @@ RUN pip install \
     pylint \
     lxml
 
+COPY --from=eigen /opt/eigen/ /opt/eigen/
+
 ENV VTR_REVISION master
 RUN git clone --depth 1 --branch ${VTR_REVISION} https://github.com/SymbiFlow/vtr-verilog-to-routing.git /vtr
 
@@ -35,6 +37,8 @@ WORKDIR /vtr/build
 
 ENV CFLAGGS "$CFLAGS -U_FORTIFY_SOURCE"
 ENV CXXFLAGS "$CXXFLAGS -U_FORTIFY_SOURCE"
+ENV C_INCLUDE_PATH /usr/include/::/opt/eigen/include/
+ENV CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH}:/opt/eigen
 
 RUN cmake \
     -DCMAKE_INSTALL_PREFIX=/opt/vtr \
