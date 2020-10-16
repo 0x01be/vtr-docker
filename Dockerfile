@@ -24,5 +24,6 @@ RUN apk add --no-cache --virtual vtr-edge-runtime-dependencies \
 
 USER xpra
 
-ENV PATH ${PATH}:/opt/vtr/bin/
+ENV VTR_ROOT /opt/vtr/
+ENV PATH ${PATH}:${VTR_ROOT}/bin/
 
