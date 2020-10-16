@@ -1,3 +1,5 @@
+FROM 0x01be/eigen as eigen
+
 FROM alpine as build
 
 RUN apk add --no-cache --virtual vtr-build-dependencies \
