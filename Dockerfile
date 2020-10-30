@@ -2,10 +2,6 @@ FROM 0x01be/vtr:build as build
 
 FROM 0x01be/xpra
 
-COPY --from=build /opt/vtr/ /opt/vtr/
-
-USER root
-
 RUN apk add --no-cache --virtual vtr-runtime-dependencies \
     libstdc++ \
     zlib \
@@ -22,14 +18,13 @@ RUN apk add --no-cache --virtual vtr-edge-runtime-dependencies \
     --repository http://dl-cdn.alpinelinux.org/alpine/edge/main \
     libtbb
 
-COPY --from=build /vtr/vtr_flow/* /workspace/
-RUN chown -R xpra:xpra /workspace
+COPY --from=build /opt/vtr/ /opt/vtr/
+COPY --from=build /vtr/vtr_flow/* ${WORKSPACE}/flow/
+RUN chown -R ${USER}:${USER} ${WORKSPACE}
 
-USER xpra
-
-WORKDIR /workspace
+USER ${USER}
 
 ENV VTR_ROOT /opt/vtr/
-ENV PATH ${PATH}:${VTR_ROOT}/bin/
-ENV COMMAND "vpr /workspace/timing/EArch.xml /workspace/blif/tseng.blif --route_chan_width 100 --disp on"
+ENV PATH ${PATH}:/opt/vtr/bin/
+ENV COMMAND "vpr ${WORKSPACE}/flow/timing/EArch.xml ${WORKSPACE}/flow/blif/tseng.blif --route_chan_width 100 --disp on"
 
